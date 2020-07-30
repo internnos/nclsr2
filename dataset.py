@@ -2,6 +2,10 @@ from pathlib import Path
 import unicodedata
 import string
 from collections import namedtuple
+import torch
+
+all_letters = string.ascii_letters + " .,;'"
+n_letters = len(all_letters)
 
 class NameDataset():
     all_letters = string.ascii_letters + " .,;'"
@@ -21,8 +25,20 @@ class NameDataset():
 
     def __getitem__(self, index):
         language, name = self.annotations[index]
-        self.all_letters.find 
-        return language, name
+        target = self._encode_name(name)
+        target = torch.nn.functional.one_hot(target, num_classes=self.n_letters)
+        target = target.reshape(-1, 1, self.n_letters)
+
+        return language, name, target
+
+    def _encode_name(self, name):
+        encoded = []
+        for char in name:
+            encoded.append(self.all_letters.find(char))
+        if not isinstance(encoded, torch.Tensor):
+            encoded = torch.Tensor(encoded).reshape(1, -1).to(torch.int64)
+            
+        return encoded
         
 def readlines(filename):
     lines = open(filename, encoding='utf-8').read().strip().split('\n')

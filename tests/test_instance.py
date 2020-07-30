@@ -3,20 +3,20 @@ from pathlib import Path
 
 def test_instance():
     dataset = NameDataset("data/names")
-    for idx, (language, name) in enumerate(dataset):
+    for idx, (language, name, target) in enumerate(dataset):
         pass
     assert idx == len(dataset) - 1
 
 def test_language():
     languages = ['Arabic', 'Chinese', 'Czech', 'Dutch', 'English', 'French', 'German', 'Greek', 'Irish', 'Italian', 'Japanese', 'Korean', 'Polish', 'Portuguese', 'Russian', 'Scottish', 'Spanish', 'Vietnamese']
     dataset = NameDataset("data/names")
-    for language, _ in dataset:
+    for language, _, __ in dataset:
         assert (language in languages) == True
 
 def test_name():
     root = "data/names"
     dataset = NameDataset(root)
-    for language, name in dataset:
+    for language, name, _ in dataset:
         dataset_txt = f'{Path(root)}/{language}.txt'
         names = readlines(dataset_txt)
         # import pdb; pdb.set_trace()
