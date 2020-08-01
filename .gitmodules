@@ -1,0 +1,3 @@
+[submodule "internal/original-repo"]
+	path = internal/original-repo
+	url = https://github.com/spro/practical-pytorch.git
